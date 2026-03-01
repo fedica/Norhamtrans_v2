@@ -1,0 +1,141 @@
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+  --ios-blue: #007AFF;
+  --ios-bg: #F2F2F7;
+  --sat: env(safe-area-inset-top, 44px);
+}
+
+body {
+  background-color: var(--ios-bg);
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+@utility ios-card {
+  background-color: white;
+  border-radius: 24px;
+  border-width: 1px;
+  border-color: var(--color-slate-100);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+@utility ios-blur {
+  backdrop-filter: blur(40px);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+@utility btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-radius: 1rem;
+  font-weight: 700;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+@utility btn-primary {
+  @apply btn;
+  background-color: #007AFF;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 122, 255, 0.2);
+}
+
+@utility btn-secondary {
+  @apply btn;
+  background-color: var(--color-slate-100);
+  color: var(--color-slate-600);
+}
+
+@utility btn-danger {
+  @apply btn;
+  background-color: var(--color-red-500);
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.2);
+}
+
+@utility btn-success {
+  @apply btn;
+  background-color: var(--color-emerald-500);
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+}
+
+@utility btn-warning {
+  @apply btn;
+  background-color: var(--color-amber-500);
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.2);
+}
+
+@utility btn-ghost {
+  @apply btn;
+  background-color: transparent;
+  color: var(--color-slate-500);
+}
+
+@utility btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+@utility input-field {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  background-color: var(--color-slate-50);
+  border-width: 1px;
+  border-color: var(--color-slate-200);
+  border-radius: 0.75rem;
+  outline: none;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+@utility input-label {
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--color-slate-400);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-left: 0.25rem;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+@utility pt-safe {
+  padding-top: var(--sat);
+}
+
+::active {
+  scale: 0.95;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

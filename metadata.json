@@ -1,0 +1,7 @@
+{
+  "name": "NorhamTrans - Logistics & Driver Management",
+  "description": "A comprehensive logistics management suite for driver tracking, inventory assignment, stop planning, and compliance monitoring.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
