@@ -480,16 +480,23 @@ const DataProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
   const saveData = async (type: 'drivers' | 'inventory' | 'stops' | 'complaints' | 'controls' | 'tours' | 'fuel_cards', data: any) => {
     if (!user) return;
-    const dataWithUser = { ...data, user_id: data.user_id || user.id };
+    
+    const payload = { ...data };
+    const tablesWithUserId = new Set(['complaints', 'stops', 'fuel_cards']);
+    
+    if (user && tablesWithUserId.has(type) && payload.user_id == null) {
+      payload.user_id = user.id;
+    }
+
     try {
       switch (type) {
-        case 'drivers': return await supabaseService.saveDriver(dataWithUser);
-        case 'inventory': return await supabaseService.saveInventoryItem(dataWithUser);
-        case 'stops': return await supabaseService.saveStop(dataWithUser);
-        case 'complaints': return await supabaseService.saveComplaint(dataWithUser);
-        case 'controls': return await supabaseService.saveControl(dataWithUser);
-        case 'tours': return await supabaseService.saveTour(dataWithUser);
-        case 'fuel_cards': return await supabaseService.saveFuelCard(dataWithUser);
+        case 'drivers': return await supabaseService.saveDriver(payload);
+        case 'inventory': return await supabaseService.saveInventoryItem(payload);
+        case 'stops': return await supabaseService.saveStop(payload);
+        case 'complaints': return await supabaseService.saveComplaint(payload);
+        case 'controls': return await supabaseService.saveControl(payload);
+        case 'tours': return await supabaseService.saveTour(payload);
+        case 'fuel_cards': return await supabaseService.saveFuelCard(payload);
       }
     } catch (error) {
       console.error(`Error saving ${type} to Supabase:`, error);

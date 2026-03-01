@@ -293,13 +293,37 @@ const DriverDashboard: React.FC = () => {
             )}
           </div>
 
-          {driverVehicle?.serviceEndDate && (
-            <div className={`flex items-center space-x-3 p-3 rounded-2xl border ${isUrgent(driverVehicle.serviceEndDate) ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100'}`}>
-              <ShieldAlert size={18} className={isUrgent(driverVehicle.serviceEndDate) ? 'text-red-600' : 'text-blue-600'} />
-              <div>
-                <p className={`text-[10px] font-black uppercase tracking-widest ${isUrgent(driverVehicle.serviceEndDate) ? 'text-red-600' : 'text-blue-600'}`}>{t.serviceEndDate}</p>
-                <p className="text-xs font-bold text-slate-700">{format(parseISO(driverVehicle.serviceEndDate), 'dd.MM.yyyy')} bei {driverVehicle.serviceLocation || 'Werkstatt'}</p>
+          {/* Service Alert for Driver */}
+          {driverVehicle && (driverVehicle.vehicleStatus === 'Service' || driverVehicle.serviceEndDate) && (
+            <div className={`p-4 rounded-2xl border flex flex-col space-y-2 ${isUrgent(driverVehicle.serviceEndDate) ? 'bg-red-50 border-red-200' : 'bg-blue-50/30 border-blue-100'}`}>
+              <div className="flex items-center space-x-3">
+                <div className={`p-2 rounded-xl ${isUrgent(driverVehicle.serviceEndDate) ? 'bg-red-600 text-white' : 'bg-blue-600 text-white'}`}>
+                  <ShieldAlert size={18} />
+                </div>
+                <div>
+                  <p className={`text-xs font-black uppercase tracking-tight ${isUrgent(driverVehicle.serviceEndDate) ? 'text-red-700' : 'text-blue-700'}`}>
+                    {driverVehicle.vehicleStatus === 'Service' ? 'Fahrzeug im Service' : t.serviceEndDate}
+                  </p>
+                  <p className="text-sm font-bold text-slate-900">
+                    {driverVehicle.serviceLocation || 'Werkstatt'}
+                  </p>
+                </div>
               </div>
+              
+              {driverVehicle.serviceEndDate && (
+                <div className="flex items-center justify-between pt-2 border-t border-black/5">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight">Geplantes Ende:</span>
+                  <span className={`text-xs font-black ${isUrgent(driverVehicle.serviceEndDate) ? 'text-red-600' : 'text-blue-600'}`}>
+                    {format(parseISO(driverVehicle.serviceEndDate), 'dd.MM.yyyy')}
+                  </span>
+                </div>
+              )}
+              
+              {driverVehicle.serviceProblem && (
+                <p className="text-[10px] text-slate-500 font-medium italic">
+                  "{driverVehicle.serviceProblem}"
+                </p>
+              )}
             </div>
           )}
         </div>

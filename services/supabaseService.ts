@@ -10,7 +10,15 @@ export const supabaseService = {
     return data || [];
   },
   async saveDriver(driver: any): Promise<Driver> {
-    const { data, error } = await supabase.from('drivers').upsert(driver).select().single();
+    const nullIfEmpty = (v: any) => (v === '' ? null : v);
+    const payload = { ...driver };
+
+    payload.vacationStart = nullIfEmpty(payload.vacationStart);
+    payload.vacationEnd = nullIfEmpty(payload.vacationEnd);
+    payload.sickStart = nullIfEmpty(payload.sickStart);
+    payload.sickEnd = nullIfEmpty(payload.sickEnd);
+
+    const { data, error } = await supabase.from('drivers').upsert(payload).select().single();
     if (error) throw error;
     return data;
   },
@@ -26,7 +34,15 @@ export const supabaseService = {
     return data || [];
   },
   async saveInventoryItem(item: any): Promise<InventoryItem> {
-    const { data, error } = await supabase.from('inventory').upsert(item).select().single();
+    const nullIfEmpty = (v: any) => (v === '' ? null : v);
+    const payload = { ...item };
+
+    // Ensure date fields are null if empty string
+    payload.huExpiration = nullIfEmpty(payload.huExpiration);
+    payload.assignmentDate = nullIfEmpty(payload.assignmentDate);
+    payload.serviceEndDate = nullIfEmpty(payload.serviceEndDate);
+
+    const { data, error } = await supabase.from('inventory').upsert(payload).select().single();
     if (error) throw error;
     return data;
   },
@@ -38,7 +54,9 @@ export const supabaseService = {
     return data || [];
   },
   async saveStop(stop: any): Promise<StopPlan> {
-    const { data, error } = await supabase.from('stops').upsert(stop).select().single();
+    const nullIfEmpty = (v: any) => (v === '' ? null : v);
+    const payload = { ...stop, date: nullIfEmpty(stop.date) };
+    const { data, error } = await supabase.from('stops').upsert(payload).select().single();
     if (error) throw error;
     return data;
   },
@@ -50,7 +68,9 @@ export const supabaseService = {
     return data || [];
   },
   async saveComplaint(complaint: any): Promise<Complaint> {
-    const { data, error } = await supabase.from('complaints').upsert(complaint).select().single();
+    const nullIfEmpty = (v: any) => (v === '' ? null : v);
+    const payload = { ...complaint, date: nullIfEmpty(complaint.date) };
+    const { data, error } = await supabase.from('complaints').upsert(payload).select().single();
     if (error) throw error;
     return data;
   },
@@ -62,7 +82,9 @@ export const supabaseService = {
     return data || [];
   },
   async saveControl(control: any): Promise<ControlChecklist> {
-    const { data, error } = await supabase.from('controls').upsert(control).select().single();
+    const nullIfEmpty = (v: any) => (v === '' ? null : v);
+    const payload = { ...control, date: nullIfEmpty(control.date) };
+    const { data, error } = await supabase.from('controls').upsert(payload).select().single();
     if (error) throw error;
     return data;
   },
@@ -74,9 +96,11 @@ export const supabaseService = {
     return data || [];
   },
   async saveTour(tour: any): Promise<Tour> {
+    const nullIfEmpty = (v: any) => (v === '' ? null : v);
+    const payload = { ...tour, date: nullIfEmpty(tour.date) };
     const { data, error } = await supabase
       .from('tours')
-      .upsert(tour, { onConflict: 'date,tourNumber' })
+      .upsert(payload, { onConflict: 'date,tourNumber' })
       .select()
       .single();
     if (error) throw error;
@@ -103,6 +127,7 @@ export const supabaseService = {
     }));
   },
   async saveFuelCard(request: any): Promise<FuelCardRequest> {
+    const nullIfEmpty = (v: any) => (v === '' ? null : v);
     const payload = {
       id: request.id,
       user_id: request.user_id, // obligatoriu
@@ -115,9 +140,9 @@ export const supabaseService = {
       mileage: request.mileage ?? request.mileage ?? null,
       cardnumber: request.cardnumber ?? request.cardNumber ?? null,
 
-      requestdate: request.requestdate ?? request.requestDate ?? new Date().toISOString(),
-      accepteddate: request.accepteddate ?? request.acceptedDate ?? null,
-      returndate: request.returndate ?? request.returnDate ?? null,
+      requestdate: nullIfEmpty(request.requestdate ?? request.requestDate) ?? new Date().toISOString(),
+      accepteddate: nullIfEmpty(request.accepteddate ?? request.acceptedDate),
+      returndate: nullIfEmpty(request.returndate ?? request.returnDate),
 
       status: request.status ?? 'PENDING',
     };
