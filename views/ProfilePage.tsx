@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '../hooks/useProfile';
 import { supabase } from '../lib/supabase';
-import { User, Phone, Mail, Save, AlertCircle, Loader2 } from 'lucide-react';
+import { User, Phone, Mail, Save, AlertCircle, Loader2, ShieldCheck } from 'lucide-react';
 import { useTranslation, useAuth } from '../App';
 
 const ProfilePage: React.FC = () => {
@@ -144,6 +144,22 @@ const ProfilePage: React.FC = () => {
                   />
                 </div>
               </div>
+
+              {profile?.driver_id && (
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Verknüpfte Fahrer-ID</label>
+                  <div className="relative">
+                    <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500" size={18} />
+                    <input 
+                      type="text" 
+                      disabled
+                      className="w-full pl-12 pr-4 py-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl font-bold text-sm text-emerald-700 cursor-not-allowed"
+                      value={profile.driver_id}
+                    />
+                  </div>
+                  <p className="text-[10px] text-emerald-600 font-bold ml-1 uppercase tracking-tight">Ihr Account ist erfolgreich mit einem Fahrer-Datensatz verknüpft.</p>
+                </div>
+              )}
 
               <button 
                 type="submit" 
